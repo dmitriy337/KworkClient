@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "KworkLibr": {
+      "commandName": "Project"
+    },
+    "FastLearn": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\vuhiz\\source\\repos\\FastLearn"
+    }
+  }
+}
