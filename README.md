@@ -1,2 +1,2 @@
 # KworkClient
-Unoficial .NET Client for kwork.com
+Unofficial .NET Client for kwork.com
