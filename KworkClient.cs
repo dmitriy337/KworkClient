@@ -46,7 +46,7 @@ namespace Kwork
 
 
 
-        private _OnUpdate onUpdate = OnUpdate;
+        //private _OnUpdate onUpdate = OnUpdate;
 
         public KworkClient(string Login, string Password, string LastPhone = null, string Proxy = null)
         {
@@ -289,36 +289,44 @@ namespace Kwork
                 }
                 while (!result.EndOfMessage);
 
-                var text = Encoding.UTF8.GetString(allBytes.ToArray(), 0, allBytes.Count);
-                //Console.WriteLine(text);
-                //this.onUpdate?.Invoke(text);
+                string text = Encoding.UTF8.GetString(allBytes.ToArray(), 0, allBytes.Count);
                 OnUpdate(text);
             }
         }
 
-        private static void OnUpdate(string text)
+        private void OnUpdate(string text)
         {
-            JObject json =  JObject.Parse(text);
-            //var r = json.GetValue("id");
+            JObject json =  JObject.Parse(Uri.UnescapeDataString(text).ToString());
             string Event = JObject.Parse(json.GetValue("text").ToString()).GetValue("event").ToString();
-            
             switch (Event)
             {
-                case ("pop_up_notify"):
-                    break;
-
                 case ("new_inbox"):
                     Types.Updates.KworkUpdateNewInbox inbox = JsonSerializer.Deserialize<Types.Updates.KworkUpdateNewInbox>(JObject.Parse(json.GetValue("text").ToString()).GetValue("data").ToString());
-                    //OnMessage?.Invoke(inbox);
+                    OnMessage?.Invoke(inbox);
                     break;
-
                 case ("is_typing"):
                     break;
-
                 default:
                     break;
             }
         }
 
+        public void StopReceiving()
+        {
+            try
+            {
+                _receivingCancellationTokenSource.Cancel();
+            }
+            catch (WebException)
+            {
+            }
+            catch (TaskCanceledException)
+            {
+            }
+            finally
+            {
+                _receivingCancellationTokenSource.Dispose();
+            }
+        }
     }
 }
