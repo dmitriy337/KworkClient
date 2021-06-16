@@ -8,7 +8,7 @@ It is a simple library for working with kwork.com
     using Kwork;
     class Program
     {
-        public static KworkClient client = new KworkClient(Login: "TestAccount2886", Password: "TestAccount2886Password");
+        public static KworkClient client = new KworkClient(Login: "TestAccountLogin", Password: "TestAccountPassword");
 
         static void Main(string[] args)
         {
